@@ -5,7 +5,7 @@ import express from 'express';
 import cors from 'cors';
 
 
-import { createPost, getPosts, updatePost } from './db/index.js';
+import { createPost, getPosts, updatePost, deletePost } from './db/index.js';
 
 //instancia express app
 const app = express();
@@ -50,14 +50,13 @@ app.post('/posts', async (req, res) => {
 app.put('/posts/:id', async (req, res) => {
     const { id } = req.params;
     const { likes } = req.body;
-
-    if (!likes) {
-        return res.status(400).json({ ok: false, result: "Error con post" });
-    }
+    // if (!likes) {
+    //     return res.status(400).json({ ok: false, result: "Error con post" });
+    // }
 
     try {
         const resultado = await updatePost(id, { likes });
-        console.log(resultado);
+        
         return res.status(200).json({ ok: true, result: resultado });
     } catch (error) {
         console.error(error);
@@ -70,7 +69,7 @@ app.delete('/posts/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
-        const resultado = await updatePost(id);
+        const resultado = await deletePost(id);
         console.log(resultado);
         return res.status(200).json({ ok: true, result: resultado });
     } catch (error) {
